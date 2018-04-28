@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="transparent">#00ffffff</color>
+
+    <color name="section_league_background">#b43545</color>
+    <color name="section_league_text_color">#ff5fff</color>
+
+    <color name="match_date_text_color">#F7C065</color>
+    <color name="match_stadium_text_color">#C3C3C3</color>
+    <color name="match_score_text_color">#484848</color>
+</resources>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/distance_normal"
+        android:layout_marginRight="@dimen/distance_normal"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/distance_small">
+
+            <!--Home-->
+            <android.support.constraint.Guideline
+                android:id="@+id/guideLine1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.35" />
+
+            <ImageView
+                android:id="@+id/image_home_logo"
+                android:layout_width="@dimen/logo_size_large"
+                android:layout_height="@dimen/logo_size_large"
+                android:layout_marginTop="@dimen/distance_small"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/guideLine1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_home_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/distance_smaller"
+                android:maxLines="2"
+                android:minLines="2"
+                android:text="Lions FC"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/guideLine1"
+                app:layout_constraintTop_toBottomOf="@+id/image_home_logo" />
+
+            <!--Center-->
+            <android.support.constraint.Guideline
+                android:id="@+id/guideLine2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <TextView
+                android:id="@+id/view_score_dash_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textColor="@color/match_score_text_color"
+                android:textSize="@dimen/text_size_match_score"
+                app:layout_constraintBottom_toBottomOf="@+id/image_home_logo"
+                app:layout_constraintLeft_toLeftOf="@+id/guideLine2"
+                app:layout_constraintRight_toRightOf="@+id/guideLine2"
+                app:layout_constraintTop_toTopOf="@+id/image_home_logo" />
+
+            <TextView
+                android:id="@+id/textView_home_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/distance_small"
+                android:text="3"
+                android:textColor="@color/match_score_text_color"
+                android:textSize="@dimen/text_size_match_score"
+                app:layout_constraintBottom_toBottomOf="@+id/image_home_logo"
+                app:layout_constraintRight_toLeftOf="@+id/view_score_dash_line"
+                app:layout_constraintTop_toTopOf="@+id/image_home_logo" />
+
+            <TextView
+                android:id="@+id/textView_away_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/distance_small"
+                android:text="1"
+                android:textColor="@color/match_score_text_color"
+                android:textSize="@dimen/text_size_match_score"
+                app:layout_constraintBottom_toBottomOf="@+id/image_home_logo"
+                app:layout_constraintLeft_toRightOf="@+id/view_score_dash_line"
+                app:layout_constraintTop_toTopOf="@+id/image_home_logo" />
+
+            <!--Away-->
+            <android.support.constraint.Guideline
+                android:id="@+id/guideLine3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.65" />
+
+            <ImageView
+                android:id="@+id/image_away_logo"
+                android:layout_width="@dimen/logo_size_large"
+                android:layout_height="@dimen/logo_size_large"
+                app:layout_constraintBottom_toBottomOf="@+id/image_home_logo"
+                app:layout_constraintLeft_toLeftOf="@+id/guideLine3"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/image_home_logo" />
+
+            <TextView
+                android:id="@+id/textView_away_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/distance_smaller"
+                android:maxLines="2"
+                android:minLines="2"
+                android:text="Tigers FC"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/guideLine3"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_away_logo" />
+
+            <TextView
+                android:id="@+id/textView_match_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Full-Time"
+                app:layout_constraintBottom_toBottomOf="@+id/textView_away_name"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView_away_name" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</layout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="distance_smaller">4dp</dimen>
+    <dimen name="distance_small">8dp</dimen>
+    <dimen name="distance_normal">16dp</dimen>
+    <dimen name="distance_large">24dp</dimen>
+    <dimen name="distance_larger">32dp</dimen>
+    <dimen name="distance_largest">40dp</dimen>
+
+    <dimen name="text_size_small">12dp</dimen>
+    <dimen name="text_size_normal">14dp</dimen>
+    <dimen name="text_size_large">16dp</dimen>
+    <dimen name="text_size_match_score">44sp</dimen>
+
+    <dimen name="logo_size_medium">48dp</dimen>
+    <dimen name="logo_size_large">56dp</dimen>
+
+</resources>
