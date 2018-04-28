@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 
 import com.ciuciu.footballhighlight.R;
 import com.ciuciu.footballhighlight.common.ui.BaseActivity;
-import com.ciuciu.footballhighlight.feature.worldcup.WorldCupFragment;
+import com.ciuciu.footballhighlight.feature.events.current.CurrentEventsFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -24,7 +24,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initActivity() {
-        addFragment(R.id.rootLayout, WorldCupFragment.newInstance());
+        addFragment(R.id.rootLayout, CurrentEventsFragment.newInstance());
     }
 
     private void addFragment(int viewId, Fragment fragment) {

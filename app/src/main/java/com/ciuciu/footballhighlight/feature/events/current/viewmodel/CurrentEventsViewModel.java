@@ -1,14 +1,14 @@
-package com.ciuciu.footballhighlight.feature.worldcup.viewmodel;
+package com.ciuciu.footballhighlight.feature.events.current.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.ciuciu.footballhighlight.common.viewmodel.BaseViewModel;
-import com.ciuciu.footballhighlight.data.Resource;
-import com.ciuciu.footballhighlight.feature.worldcup.interactor.WorldCupInteractor;
+import com.ciuciu.footballhighlight.data.Response;
+import com.ciuciu.footballhighlight.feature.events.current.interactor.CurrentEventsInteractor;
 import com.ciuciu.footballhighlight.model.ItemList;
-import com.ciuciu.footballhighlight.model.entity.MatchEntity;
 import com.ciuciu.footballhighlight.model.view.LeagueSectionHeader;
 import com.ciuciu.footballhighlight.model.view.Match;
 
@@ -17,21 +17,24 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class WorldCupViewModel extends BaseViewModel {
+public class CurrentEventsViewModel extends BaseViewModel {
 
-    private WorldCupInteractor mWorldCupInteractor;
+    private CurrentEventsInteractor mInteractor;
 
-    private MediatorLiveData<Resource<ItemList>> matchList;
+    private MediatorLiveData<Response<ItemList>> matchList;
 
     @Inject
-    public WorldCupViewModel(WorldCupInteractor interactor) {
-        mWorldCupInteractor = interactor;
+    public CurrentEventsViewModel(CurrentEventsInteractor interactor) {
+        mInteractor = interactor;
     }
 
-    public LiveData<Resource<ItemList>> getMatchList() {
+    public LiveData<Response<ItemList>> getCurrentEvents(String from, String to,
+                                                         @Nullable String countryId,
+                                                         @Nullable String leagueId,
+                                                         @Nullable String matchId) {
         if (matchList == null) {
             matchList = new MediatorLiveData<>();
-            matchList.addSource(mWorldCupInteractor.getScores(), itemListResource -> {
+            matchList.addSource(mInteractor.getCurrentEvents(from, to, countryId, leagueId, matchId), itemListResource -> {
                 switch (itemListResource.getStatus()) {
                     case SUCCESS:
                         matchList.setValue(validData(itemListResource.getData().getItems()));
@@ -46,7 +49,7 @@ public class WorldCupViewModel extends BaseViewModel {
         return matchList;
     }
 
-    private Resource<ItemList> validData(List<Match> matchList) {
+    private Response<ItemList> validData(List<Match> matchList) {
         List<LeagueSectionHeader> leagueSectionHeaders = new ArrayList<>();
 
         if (matchList != null) {
@@ -68,7 +71,7 @@ public class WorldCupViewModel extends BaseViewModel {
             }
         }
 
-        return Resource.success(new ItemList(leagueSectionHeaders));
+        return Response.success(new ItemList(leagueSectionHeaders));
     }
 
     private int indexOfList(Match match, @NonNull List<LeagueSectionHeader> leagueSectionHeaderList) {

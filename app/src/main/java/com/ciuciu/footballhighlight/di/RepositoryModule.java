@@ -1,6 +1,7 @@
 package com.ciuciu.footballhighlight.di;
 
 import com.ciuciu.footballhighlight.data.network.LiveScoreApi;
+import com.ciuciu.footballhighlight.repository.CurrentEventsRepository;
 import com.ciuciu.footballhighlight.repository.ScoreHighlightRepository;
 import com.ciuciu.footballhighlight.repository.WorldCupRepository;
 
@@ -23,5 +24,11 @@ public class RepositoryModule {
     @Singleton
     WorldCupRepository provideWorldCupRepository(LiveScoreApi liveScoreApi) {
         return new WorldCupRepository(liveScoreApi);
+    }
+
+    @Provides
+    @Singleton
+    CurrentEventsRepository provideCurrentEventsRepository(LiveScoreApi liveScoreApi) {
+        return new CurrentEventsRepository(liveScoreApi);
     }
 }

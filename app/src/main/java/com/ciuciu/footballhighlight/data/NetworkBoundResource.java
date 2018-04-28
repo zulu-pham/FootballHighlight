@@ -9,7 +9,6 @@ import com.ciuciu.footballhighlight.ApplicationException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * NetworkBoundResource abstract class to persist data offline
@@ -18,12 +17,12 @@ import retrofit2.Response;
 
 public abstract class NetworkBoundResource<ResultType, RequestType> {
 
-    private final MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
+    private final MediatorLiveData<Response<ResultType>> result = new MediatorLiveData<>();
 
     @MainThread
     public NetworkBoundResource() {
         // set State LOADING
-        result.setValue(Resource.<ResultType>loading(null));
+        result.setValue(Response.<ResultType>loading(null));
         // init data
         fetchFromNetwork();
     }
@@ -31,14 +30,15 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     private void fetchFromNetwork() {
 
         createCall().enqueue(new Callback<RequestType>() {
+
             @Override
-            public void onResponse(Call<RequestType> call, Response<RequestType> response) {
-                result.setValue(Resource.success(processResult(response.body())));
+            public void onResponse(Call<RequestType> call, retrofit2.Response<RequestType> response) {
+                result.setValue(Response.success(processResult(response.body())));
             }
 
             @Override
             public void onFailure(Call<RequestType> call, Throwable t) {
-                result.setValue(Resource.error(new ApplicationException(t), null));
+                result.setValue(Response.error(new ApplicationException(t), null));
             }
         });
     }
@@ -50,7 +50,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
 
     protected abstract ResultType processResult(RequestType requestType);
 
-    public final LiveData<Resource<ResultType>> getAsLiveData() {
+    public final LiveData<Response<ResultType>> getAsLiveData() {
         return result;
     }
 

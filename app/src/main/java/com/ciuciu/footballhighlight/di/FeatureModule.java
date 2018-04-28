@@ -3,8 +3,8 @@ package com.ciuciu.footballhighlight.di;
 import android.arch.lifecycle.ViewModel;
 
 import com.ciuciu.footballhighlight.common.viewmodel.ViewModelKey;
-import com.ciuciu.footballhighlight.feature.worldcup.WorldCupFragment;
-import com.ciuciu.footballhighlight.feature.worldcup.viewmodel.WorldCupViewModel;
+import com.ciuciu.footballhighlight.feature.events.current.CurrentEventsFragment;
+import com.ciuciu.footballhighlight.feature.events.current.viewmodel.CurrentEventsViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -15,13 +15,13 @@ import dagger.multibindings.IntoMap;
 public abstract class FeatureModule {
 
     /**
-     * WorldCup module
+     * Events Current module
      */
     @ContributesAndroidInjector
-    abstract WorldCupFragment worldCupFragment();
+    abstract CurrentEventsFragment currentEventsFragment();
 
     @Binds
     @IntoMap
-    @ViewModelKey(WorldCupViewModel.class)
-    abstract ViewModel bindWorldCupViewModel(WorldCupViewModel worldCupViewModel);
+    @ViewModelKey(CurrentEventsViewModel.class)
+    abstract ViewModel bindCurrentEventsViewModel(CurrentEventsViewModel currentEventsViewModel);
 }

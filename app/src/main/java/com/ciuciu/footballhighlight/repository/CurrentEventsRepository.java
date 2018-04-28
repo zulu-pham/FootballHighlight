@@ -2,6 +2,7 @@ package com.ciuciu.footballhighlight.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.ciuciu.footballhighlight.data.NetworkBoundResource;
 import com.ciuciu.footballhighlight.data.Response;
@@ -16,24 +17,28 @@ import java.util.List;
 import javax.inject.Inject;
 
 import retrofit2.Call;
+import retrofit2.http.Query;
 
-public class ScoreHighlightRepository {
+public class CurrentEventsRepository {
 
     private LiveScoreApi mLiveScoreApi;
 
     @Inject
-    public ScoreHighlightRepository(LiveScoreApi liveScoreApi) {
+    public CurrentEventsRepository(LiveScoreApi liveScoreApi) {
         mLiveScoreApi = liveScoreApi;
     }
 
-    public LiveData<Response<ItemList>> getListMatch() {
+    public LiveData<Response<ItemList>> getCurrentEvents(String from, String to,
+                                                         @Nullable String countryId,
+                                                         @Nullable String leagueId,
+                                                         @Nullable String matchId) {
 
         return new NetworkBoundResource<ItemList, List<MatchEntity>>() {
 
             @NonNull
             @Override
             protected Call<List<MatchEntity>> createCall() {
-                return mLiveScoreApi.getEvents("2018-4-23", "2018-4-25", "62", null, null);
+                return mLiveScoreApi.getEvents(from, to, countryId, leagueId, matchId);
             }
 
             @Override
@@ -54,4 +59,5 @@ public class ScoreHighlightRepository {
 
         return itemList;
     }
+
 }

@@ -1,4 +1,4 @@
-package com.ciuciu.footballhighlight.feature.worldcup;
+package com.ciuciu.footballhighlight.feature.common.adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,11 +14,11 @@ import com.ciuciu.footballhighlight.model.view.Match;
 
 import java.util.List;
 
-public class WorldCupScoreAdapter extends SectionRecyclerViewAdapter<LeagueSectionHeader, Match, LeagueSectionViewHolder, ScoreViewHolder> {
+public class MatchListAdapter extends SectionRecyclerViewAdapter<LeagueSectionHeader, Match, LeagueSectionViewHolder, ScoreViewHolder> {
 
     private Context mContext;
 
-    public WorldCupScoreAdapter(Context context, List<LeagueSectionHeader> sectionItemList) {
+    public MatchListAdapter(Context context, List<LeagueSectionHeader> sectionItemList) {
         super(context, sectionItemList);
         mContext = context;
     }

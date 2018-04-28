@@ -5,16 +5,16 @@ import android.support.annotation.Nullable;
 
 import com.ciuciu.footballhighlight.ApplicationException;
 
-import static com.ciuciu.footballhighlight.data.Resource.Status.ERROR;
-import static com.ciuciu.footballhighlight.data.Resource.Status.LOADING;
-import static com.ciuciu.footballhighlight.data.Resource.Status.SUCCESS;
+import static com.ciuciu.footballhighlight.data.Response.Status.ERROR;
+import static com.ciuciu.footballhighlight.data.Response.Status.LOADING;
+import static com.ciuciu.footballhighlight.data.Response.Status.SUCCESS;
 
 /**
  * A generic class that holds a value with its loading status.
  *
  * @param <T>
  */
-public class Resource<T> {
+public class Response<T> {
     /**
      * Status of a resource that is provided to the UI.
      * <p>
@@ -29,7 +29,7 @@ public class Resource<T> {
     private final T data;
     private final ApplicationException exception;
 
-    private Resource(@NonNull Status status, @Nullable T data, @Nullable ApplicationException exception) {
+    private Response(@NonNull Status status, @Nullable T data, @Nullable ApplicationException exception) {
         this.status = status;
         this.data = data;
         this.exception = exception;
@@ -47,15 +47,15 @@ public class Resource<T> {
         return exception;
     }
 
-    public static <T> Resource<T> success(@NonNull T data) {
-        return new Resource<>(SUCCESS, data, null);
+    public static <T> Response<T> success(@NonNull T data) {
+        return new Response<>(SUCCESS, data, null);
     }
 
-    public static <T> Resource<T> error(ApplicationException exception, @Nullable T data) {
-        return new Resource<>(ERROR, data, exception);
+    public static <T> Response<T> error(ApplicationException exception, @Nullable T data) {
+        return new Response<>(ERROR, data, exception);
     }
 
-    public static <T> Resource<T> loading(@Nullable T data) {
-        return new Resource<>(LOADING, data, null);
+    public static <T> Response<T> loading(@Nullable T data) {
+        return new Response<>(LOADING, data, null);
     }
 }

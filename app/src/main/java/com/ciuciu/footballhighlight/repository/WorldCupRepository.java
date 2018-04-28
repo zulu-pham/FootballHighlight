@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.ciuciu.footballhighlight.data.NetworkBoundResource;
-import com.ciuciu.footballhighlight.data.Resource;
+import com.ciuciu.footballhighlight.data.Response;
 import com.ciuciu.footballhighlight.data.network.LiveScoreApi;
 import com.ciuciu.footballhighlight.model.ItemList;
 import com.ciuciu.footballhighlight.model.entity.MatchEntity;
@@ -26,7 +26,7 @@ public class WorldCupRepository {
         mLiveScoreApi = liveScoreApi;
     }
 
-    public LiveData<Resource<ItemList>> getListMatch() {
+    public LiveData<Response<ItemList>> getListMatch() {
 
         return new NetworkBoundResource<ItemList, List<MatchEntity>>() {
 
