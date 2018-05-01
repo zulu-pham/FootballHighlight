@@ -11,6 +11,10 @@ import com.ciuciu.footballhighlight.databinding.FragmentEventsCurrentBinding;
 import com.ciuciu.footballhighlight.feature.common.adapter.MatchListAdapter;
 import com.ciuciu.footballhighlight.feature.events.current.viewmodel.CurrentEventsViewModel;
 import com.ciuciu.footballhighlight.model.ItemList;
+import com.ciuciu.footballhighlight.model.view.LeagueSectionHeader;
+import com.ciuciu.footballhighlight.model.view.Match;
+
+import java.util.List;
 
 public class CurrentEventsFragment extends BaseLifecycleFragment<FragmentEventsCurrentBinding, CurrentEventsViewModel> {
 
@@ -41,7 +45,7 @@ public class CurrentEventsFragment extends BaseLifecycleFragment<FragmentEventsC
 
     @Override
     protected void subscribeUI(CurrentEventsViewModel viewModel) {
-        viewModel.getCurrentEvents("2018-4-24", "2018-4-26", "163", null, null)
+        viewModel.getMatchList()
                 .observe(this, itemListResponse -> processResponse(itemListResponse));
     }
 
@@ -58,7 +62,7 @@ public class CurrentEventsFragment extends BaseLifecycleFragment<FragmentEventsC
 
             case SUCCESS:
                 Log.d("WorldCupFragment", "SUCCESS");
-                MatchListAdapter adapter = new MatchListAdapter(getContext(), itemListResource.getData().getItems());
+                MatchListAdapter adapter = new MatchListAdapter(getContext(), itemListResource.getData().list());
                 mViewDataBinding.recyclerView.setAdapter(adapter);
                 break;
 

@@ -52,6 +52,10 @@ dependencies {
     implementation "android.arch.lifecycle:common-java8:1.1.1"
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:1.1.1"
+    // RxJava support for Room (use 1.1.0-beta3 for latest beta)
+    implementation "android.arch.persistence.room:rxjava2:1.0.0"
+    // ReactiveStreams support for LiveData
+    implementation "android.arch.lifecycle:reactivestreams:1.1.1"
 
     // Dependency injection by Dagger
     def dagger_version = "2.14.1"

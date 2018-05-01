@@ -16,8 +16,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
-import retrofit2.http.Query;
 
 public class CurrentEventsRepository {
 
@@ -43,21 +45,28 @@ public class CurrentEventsRepository {
 
             @Override
             protected ItemList processResult(List<MatchEntity> entityList) {
-                return parseMatchEntityList(entityList);
+                return new ItemList(parseMatchEntityList(entityList));
             }
         }.getAsLiveData();
     }
 
-    private ItemList parseMatchEntityList(List<MatchEntity> entityList) {
-        ItemList itemList = new ItemList();
+    public Observable<List<Match>> getCurrentEvent(String from, String to,
+                                                   @Nullable String countryId,
+                                                   @Nullable String leagueId,
+                                                   @Nullable String matchId) {
 
+        return mLiveScoreApi.observableEvents(from, to, countryId, leagueId, matchId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(matchEntities -> parseMatchEntityList(matchEntities));
+    }
+
+    private List<Match> parseMatchEntityList(List<MatchEntity> entityList) {
         List<Match> matchList = new ArrayList<>();
         for (MatchEntity entity : entityList) {
             matchList.add(new Match(entity));
         }
-        itemList.setItems(matchList);
 
-        return itemList;
+        return matchList;
     }
-
 }

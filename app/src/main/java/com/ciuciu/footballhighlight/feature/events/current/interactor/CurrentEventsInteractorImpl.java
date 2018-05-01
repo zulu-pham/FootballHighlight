@@ -10,12 +10,10 @@ import com.ciuciu.footballhighlight.data.network.LiveScoreApi;
 import com.ciuciu.footballhighlight.data.preferences.PreferencesHelper;
 import com.ciuciu.footballhighlight.model.ItemList;
 import com.ciuciu.footballhighlight.repository.CurrentEventsRepository;
-import com.ciuciu.footballhighlight.repository.WorldCupRepository;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 
 public class CurrentEventsInteractorImpl extends BaseInteractor implements CurrentEventsInteractor {
 
@@ -34,6 +32,13 @@ public class CurrentEventsInteractorImpl extends BaseInteractor implements Curre
                                                          @Nullable String countryId,
                                                          @Nullable String leagueId,
                                                          @Nullable String matchId) {
+
         return mCurrentEventsRepository.getCurrentEvents(from, to, countryId, leagueId, matchId);
+    }
+
+    @Override
+    public Observable<ItemList> getEvents(String from, String to, @Nullable String countryId, @Nullable String leagueId, @Nullable String matchId) {
+        return mCurrentEventsRepository.getCurrentEvent(from, to, countryId, leagueId, matchId)
+                .map(matchList -> new ItemList(matchList));
     }
 }
