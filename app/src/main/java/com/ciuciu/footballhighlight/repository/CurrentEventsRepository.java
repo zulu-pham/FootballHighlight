@@ -3,6 +3,7 @@ package com.ciuciu.footballhighlight.repository;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.ciuciu.footballhighlight.data.NetworkBoundResource;
 import com.ciuciu.footballhighlight.data.Response;
@@ -12,6 +13,7 @@ import com.ciuciu.footballhighlight.model.entity.MatchEntity;
 import com.ciuciu.footballhighlight.model.view.Match;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -58,15 +60,30 @@ public class CurrentEventsRepository {
         return mLiveScoreApi.observableEvents(from, to, countryId, leagueId, matchId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(matchEntities -> parseMatchEntityList(matchEntities));
+                .map(matchEntities -> parseMatchEntityList(matchEntities))
+                /*.onExceptionResumeNext(matchList -> {
+                    Log.d("CurrentEventsRepository", "onExceptionResumeNext");
+                })*/
+                /*.onErrorResumeNext(throwable -> {
+                    Log.d("CurrentEventsRepository", "onErrorResumeNext");
+                })*/
+                .onErrorReturn(throwable -> {
+                    Log.d("CurrentEventsRepository", "onErrorReturn");
+                    return new ArrayList<>();
+                })
+                //.doOnError(matchList -> new ArrayList<Match>())
+                ;
     }
 
     private List<Match> parseMatchEntityList(List<MatchEntity> entityList) {
         List<Match> matchList = new ArrayList<>();
         for (MatchEntity entity : entityList) {
-            matchList.add(new Match(entity));
+            Match match = new Match(entity);
+            if (match.getMatchDate() != null) {
+                matchList.add(match);
+            }
         }
-
+        Collections.sort(matchList, (match1, match2) -> match1.getMatchDate().compareTo(match2.getMatchDate()));
         return matchList;
     }
 }

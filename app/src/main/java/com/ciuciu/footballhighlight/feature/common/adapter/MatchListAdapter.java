@@ -1,14 +1,16 @@
 package com.ciuciu.footballhighlight.feature.common.adapter;
 
 import android.content.Context;
-import android.util.Log;
+import android.support.v7.util.DiffUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ciuciu.footballhighlight.feature.common.adapter.sectionedadapter.SectionRecyclerViewAdapter;
+import com.ciuciu.footballhighlight.feature.common.adapter.sectionedadapter.SectionWrapper;
 import com.ciuciu.footballhighlight.feature.common.viewholder.LeagueSectionViewHolder;
 import com.ciuciu.footballhighlight.feature.common.viewholder.ScoreViewHolder;
+import com.ciuciu.footballhighlight.model.ItemList;
 import com.ciuciu.footballhighlight.model.view.LeagueSectionHeader;
 import com.ciuciu.footballhighlight.model.view.Match;
 
@@ -21,6 +23,17 @@ public class MatchListAdapter extends SectionRecyclerViewAdapter<LeagueSectionHe
     public MatchListAdapter(Context context, List<LeagueSectionHeader> sectionItemList) {
         super(context, sectionItemList);
         mContext = context;
+    }
+
+    public void updateData(List<LeagueSectionHeader> sectionItemList) {
+        List<SectionWrapper<LeagueSectionHeader, Match>> newListSectionWrapper = generateFlatItemList(sectionItemList);
+
+        ItemList newList = new ItemList<>(newListSectionWrapper);
+        ItemList oldList = new ItemList(getFlatItemList());
+
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MatchDiffCallback(newList, oldList));
+        setFlatItemList(newListSectionWrapper);
+        diffResult.dispatchUpdatesTo(this);
     }
 
     @Override

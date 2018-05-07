@@ -6,7 +6,7 @@ package com.ciuciu.footballhighlight.feature.common.adapter.sectionedadapter;
  * @param <S> Section list item
  * @param <C> Child list item
  */
-class SectionWrapper<S extends Section<C>, C> {
+public class SectionWrapper<S extends Section<C>, C> {
 
     private boolean sectionItem;
     private S section;

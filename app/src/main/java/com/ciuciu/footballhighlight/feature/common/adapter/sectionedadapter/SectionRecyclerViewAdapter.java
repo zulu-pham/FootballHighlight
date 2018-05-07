@@ -161,7 +161,7 @@ public abstract class SectionRecyclerViewAdapter<S extends Section<C>, C, SVH ex
      *                        the {@link SectionRecyclerViewAdapter}
      * @return A list of all sections and their children
      */
-    private List<SectionWrapper<S, C>> generateFlatItemList(List<S> sectionItemList) {
+    public List<SectionWrapper<S, C>> generateFlatItemList(List<S> sectionItemList) {
         List<SectionWrapper<S, C>> flatItemList = new ArrayList<>();
         for (int i = 0; i < sectionItemList.size(); i++) {
             S section = sectionItemList.get(i);
@@ -180,6 +180,13 @@ public abstract class SectionRecyclerViewAdapter<S extends Section<C>, C, SVH ex
         return flatItemList.get(position).isSection() ? SECTION_VIEW_TYPE : CHILD_VIEW_TYPE;
     }
 
+    public List<SectionWrapper<S, C>> getFlatItemList() {
+        return flatItemList;
+    }
+
+    public void setFlatItemList(List<SectionWrapper<S, C>> flatItemList) {
+        this.flatItemList = flatItemList;
+    }
 
     public boolean isSectionViewType(int viewType) {
         return viewType == SECTION_VIEW_TYPE;

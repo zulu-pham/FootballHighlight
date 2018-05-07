@@ -11,12 +11,12 @@ import com.ciuciu.footballhighlight.databinding.FragmentEventsCurrentBinding;
 import com.ciuciu.footballhighlight.feature.common.adapter.MatchListAdapter;
 import com.ciuciu.footballhighlight.feature.events.current.viewmodel.CurrentEventsViewModel;
 import com.ciuciu.footballhighlight.model.ItemList;
-import com.ciuciu.footballhighlight.model.view.LeagueSectionHeader;
-import com.ciuciu.footballhighlight.model.view.Match;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class CurrentEventsFragment extends BaseLifecycleFragment<FragmentEventsCurrentBinding, CurrentEventsViewModel> {
+
+    private MatchListAdapter mAdapter;
 
     public static Fragment newInstance() {
         Fragment fragment = new CurrentEventsFragment();
@@ -40,7 +40,8 @@ public class CurrentEventsFragment extends BaseLifecycleFragment<FragmentEventsC
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        mAdapter = new MatchListAdapter(getContext(), new ArrayList<>());
+        mViewDataBinding.recyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -62,8 +63,9 @@ public class CurrentEventsFragment extends BaseLifecycleFragment<FragmentEventsC
 
             case SUCCESS:
                 Log.d("WorldCupFragment", "SUCCESS");
-                MatchListAdapter adapter = new MatchListAdapter(getContext(), itemListResource.getData().list());
-                mViewDataBinding.recyclerView.setAdapter(adapter);
+                mAdapter.updateData(itemListResource.getData().list());
+                /*MatchListAdapter adapter = new MatchListAdapter(getContext(), itemListResource.getData().list());
+                mViewDataBinding.recyclerView.setAdapter(adapter);*/
                 break;
 
             case ERROR:

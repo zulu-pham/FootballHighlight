@@ -1,6 +1,7 @@
 package com.ciuciu.footballhighlight.di;
 
 import com.ciuciu.footballhighlight.BuildConfig;
+import com.ciuciu.footballhighlight.data.network.RxErrorHandlingCallAdapterFactory;
 
 import java.io.IOException;
 
@@ -59,7 +60,7 @@ public class NetworkModule {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
                 .client(client)
                 .build();
     }

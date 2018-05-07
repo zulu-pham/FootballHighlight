@@ -22,16 +22,19 @@ public class ImageUtils {
     }
 
     public static Drawable getDrawableByName(Context context, String clubName) throws Exception {
-        String drawableName = clubName.toLowerCase() + "_logo";
+        String drawableName = clubName.toLowerCase() ;
         drawableName = drawableName.replaceAll(" ", "_");
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier(drawableName, "drawable", context.getPackageName());
 
-        try {
-            return ContextCompat.getDrawable(context, resourceId);
-        } catch (Exception ex) {
-            throw new Exception(ex);
+        if (resourceId != 0) {
+            try {
+                return ContextCompat.getDrawable(context, resourceId);
+            } catch (Exception ex) {
+                throw new Exception(ex);
+            }
         }
+        return null;
     }
 
 }
