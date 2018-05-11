@@ -9,6 +9,7 @@ import com.ciuciu.footballhighlight.common.ui.BaseLifecycleFragment;
 import com.ciuciu.footballhighlight.data.Response;
 import com.ciuciu.footballhighlight.databinding.FragmentEventsCurrentBinding;
 import com.ciuciu.footballhighlight.feature.common.adapter.MatchListAdapter;
+import com.ciuciu.footballhighlight.feature.common.viewholder.ScoreDividerItemDecoration;
 import com.ciuciu.footballhighlight.feature.events.current.viewmodel.CurrentEventsViewModel;
 import com.ciuciu.footballhighlight.model.ItemList;
 
@@ -42,6 +43,7 @@ public class CurrentEventsFragment extends BaseLifecycleFragment<FragmentEventsC
     protected void initView(Bundle savedInstanceState) {
         mAdapter = new MatchListAdapter(getContext(), new ArrayList<>());
         mViewDataBinding.recyclerView.setAdapter(mAdapter);
+        mViewDataBinding.recyclerView.addItemDecoration(new ScoreDividerItemDecoration(getContext()));
     }
 
     @Override
@@ -64,8 +66,6 @@ public class CurrentEventsFragment extends BaseLifecycleFragment<FragmentEventsC
             case SUCCESS:
                 Log.d("WorldCupFragment", "SUCCESS");
                 mAdapter.updateData(itemListResource.getData().list());
-                /*MatchListAdapter adapter = new MatchListAdapter(getContext(), itemListResource.getData().list());
-                mViewDataBinding.recyclerView.setAdapter(adapter);*/
                 break;
 
             case ERROR:

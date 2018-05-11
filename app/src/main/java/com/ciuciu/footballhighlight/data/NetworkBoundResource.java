@@ -1,14 +1,11 @@
 package com.ciuciu.footballhighlight.data;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 
-import com.ciuciu.footballhighlight.ApplicationException;
-
-import retrofit2.Call;
-import retrofit2.Callback;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * NetworkBoundResource abstract class to persist data offline
@@ -17,41 +14,39 @@ import retrofit2.Callback;
 
 public abstract class NetworkBoundResource<ResultType, RequestType> {
 
-    private final MediatorLiveData<Response<ResultType>> result = new MediatorLiveData<>();
+    private Observable<Response<ResultType>> result;
 
     @MainThread
     public NetworkBoundResource() {
-        // set State LOADING
-        result.setValue(Response.<ResultType>loading(null));
-        // init data
-        fetchFromNetwork();
+        result = createCall()
+                .subscribeOn(Schedulers.io())
+                .flatMap(apiResponse -> Observable.just(Response.success(transformData(apiResponse))))
+                .doOnError(t -> {
+                    onFetchFailed();
+                })
+                .onErrorResumeNext(t -> {
+                    return Observable.just(Response.error(t, null));
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                //.startWith(Response.loading(null))
+        ;
+
     }
 
-    private void fetchFromNetwork() {
-
-        createCall().enqueue(new Callback<RequestType>() {
-
-            @Override
-            public void onResponse(Call<RequestType> call, retrofit2.Response<RequestType> response) {
-                result.setValue(Response.success(processResult(response.body())));
-            }
-
-            @Override
-            public void onFailure(Call<RequestType> call, Throwable t) {
-                result.setValue(Response.error(new ApplicationException(t), null));
-            }
-        });
+    public Observable<Response<ResultType>> asObservable() {
+        return result;
     }
 
-    // Called to create the API call.
     @NonNull
     @MainThread
-    protected abstract Call<RequestType> createCall();
+    protected abstract Observable<RequestType> createCall();
 
-    protected abstract ResultType processResult(RequestType requestType);
+    @NonNull
+    @MainThread
+    protected abstract ResultType transformData(RequestType response);
 
-    public final LiveData<Response<ResultType>> getAsLiveData() {
-        return result;
+    protected void onFetchFailed() {
+
     }
 
 }

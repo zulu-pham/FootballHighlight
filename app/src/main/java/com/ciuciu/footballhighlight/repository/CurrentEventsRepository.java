@@ -1,6 +1,5 @@
 package com.ciuciu.footballhighlight.repository;
 
-import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -8,7 +7,6 @@ import android.util.Log;
 import com.ciuciu.footballhighlight.data.NetworkBoundResource;
 import com.ciuciu.footballhighlight.data.Response;
 import com.ciuciu.footballhighlight.data.network.LiveScoreApi;
-import com.ciuciu.footballhighlight.model.ItemList;
 import com.ciuciu.footballhighlight.model.entity.MatchEntity;
 import com.ciuciu.footballhighlight.model.view.Match;
 
@@ -21,7 +19,6 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
 
 public class CurrentEventsRepository {
 
@@ -32,24 +29,26 @@ public class CurrentEventsRepository {
         mLiveScoreApi = liveScoreApi;
     }
 
-    public LiveData<Response<ItemList>> getCurrentEvents(String from, String to,
-                                                         @Nullable String countryId,
-                                                         @Nullable String leagueId,
-                                                         @Nullable String matchId) {
 
-        return new NetworkBoundResource<ItemList, List<MatchEntity>>() {
+    public Observable<Response<List<Match>>> getCurrentEvents(String from, String to,
+                                                              @Nullable String countryId,
+                                                              @Nullable String leagueId,
+                                                              @Nullable String matchId) {
+
+        return new NetworkBoundResource<List<Match>, List<MatchEntity>>() {
 
             @NonNull
             @Override
-            protected Call<List<MatchEntity>> createCall() {
-                return mLiveScoreApi.getEvents(from, to, countryId, leagueId, matchId);
+            protected Observable<List<MatchEntity>> createCall() {
+                return mLiveScoreApi.observableEvents(from, to, countryId, leagueId, matchId);
             }
 
+            @NonNull
             @Override
-            protected ItemList processResult(List<MatchEntity> entityList) {
-                return new ItemList(parseMatchEntityList(entityList));
+            protected List<Match> transformData(List<MatchEntity> response) {
+                return parseMatchEntityList(response);
             }
-        }.getAsLiveData();
+        }.asObservable();
     }
 
     public Observable<List<Match>> getCurrentEvent(String from, String to,
@@ -61,17 +60,10 @@ public class CurrentEventsRepository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(matchEntities -> parseMatchEntityList(matchEntities))
-                /*.onExceptionResumeNext(matchList -> {
-                    Log.d("CurrentEventsRepository", "onExceptionResumeNext");
-                })*/
-                /*.onErrorResumeNext(throwable -> {
-                    Log.d("CurrentEventsRepository", "onErrorResumeNext");
-                })*/
                 .onErrorReturn(throwable -> {
                     Log.d("CurrentEventsRepository", "onErrorReturn");
                     return new ArrayList<>();
                 })
-                //.doOnError(matchList -> new ArrayList<Match>())
                 ;
     }
 

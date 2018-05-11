@@ -3,8 +3,6 @@ package com.ciuciu.footballhighlight.data;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.ciuciu.footballhighlight.ApplicationException;
-
 import static com.ciuciu.footballhighlight.data.Response.Status.ERROR;
 import static com.ciuciu.footballhighlight.data.Response.Status.LOADING;
 import static com.ciuciu.footballhighlight.data.Response.Status.SUCCESS;
@@ -27,9 +25,9 @@ public class Response<T> {
 
     private final Status status;
     private final T data;
-    private final ApplicationException exception;
+    private final Throwable exception;
 
-    private Response(@NonNull Status status, @Nullable T data, @Nullable ApplicationException exception) {
+    private Response(@NonNull Status status, @Nullable T data, @Nullable Throwable exception) {
         this.status = status;
         this.data = data;
         this.exception = exception;
@@ -43,7 +41,7 @@ public class Response<T> {
         return data;
     }
 
-    public ApplicationException getException() {
+    public Throwable getException() {
         return exception;
     }
 
@@ -51,7 +49,7 @@ public class Response<T> {
         return new Response<>(SUCCESS, data, null);
     }
 
-    public static <T> Response<T> error(ApplicationException exception, @Nullable T data) {
+    public static <T> Response<T> error(Throwable exception, @Nullable T data) {
         return new Response<>(ERROR, data, exception);
     }
 

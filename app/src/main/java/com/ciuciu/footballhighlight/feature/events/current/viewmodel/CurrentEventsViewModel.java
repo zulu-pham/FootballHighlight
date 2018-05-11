@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.ciuciu.footballhighlight.ApplicationException;
 import com.ciuciu.footballhighlight.LeagueConfig;
 import com.ciuciu.footballhighlight.common.viewmodel.BaseViewModel;
 import com.ciuciu.footballhighlight.data.Response;
@@ -80,7 +79,7 @@ public class CurrentEventsViewModel extends BaseViewModel {
                     @Override
                     public void onError(Throwable t) {
                         Log.d(TAG, "subscribeWith onError " + t.toString());
-                        responseData.setValue(Response.error(new ApplicationException(t), null));
+                        responseData.setValue(Response.error(t, null));
                     }
 
                     @Override
@@ -93,7 +92,7 @@ public class CurrentEventsViewModel extends BaseViewModel {
     }
 
     private Flowable<List<Match>> createObservable() {
-        Observable<List<Match>>[] observables = new Observable[supportLeagues.size()];
+        Observable<Response<List<Match>>>[] observables = new Observable[supportLeagues.size()];
         for (int i = 0; i < observables.length; i++) {
             observables[i] = getEvents(supportLeagues.get(i).getCountryId(), supportLeagues.get(i).getLeagueId());
         }
@@ -103,9 +102,9 @@ public class CurrentEventsViewModel extends BaseViewModel {
                 .toList()
                 .map(lists -> {
                     List<Match> matchList = new ArrayList<>();
-                    for (List<Match> list : lists) {
-                        for (Match match : list) {
-                            matchList.add(match);
+                    for (Response<List<Match>> response : lists) {
+                        if (response.getData() != null) {
+                            matchList.addAll(response.getData());
                         }
                     }
                     return matchList;
@@ -117,7 +116,7 @@ public class CurrentEventsViewModel extends BaseViewModel {
                 ;
     }
 
-    private Observable<List<Match>> getEvents(@Nullable String countryId, @Nullable String leagueId) {
+    private Observable<Response<List<Match>>> getEvents(@Nullable String countryId, @Nullable String leagueId) {
         String to = new SimpleDateFormat("yyyy-M-dd").format(DateUtils.tomorrow());
 
         return mInteractor.getEvents(mFrom, to, countryId, leagueId, null);

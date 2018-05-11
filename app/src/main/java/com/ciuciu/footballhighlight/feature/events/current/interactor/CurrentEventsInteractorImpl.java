@@ -3,6 +3,7 @@ package com.ciuciu.footballhighlight.feature.events.current.interactor;
 import android.support.annotation.Nullable;
 
 import com.ciuciu.footballhighlight.common.interactor.BaseInteractor;
+import com.ciuciu.footballhighlight.data.Response;
 import com.ciuciu.footballhighlight.data.disk.DiskHelper;
 import com.ciuciu.footballhighlight.data.network.LiveScoreApi;
 import com.ciuciu.footballhighlight.data.preferences.PreferencesHelper;
@@ -27,7 +28,7 @@ public class CurrentEventsInteractorImpl extends BaseInteractor implements Curre
     }
 
     @Override
-    public Observable<List<Match>> getEvents(String from, String to, @Nullable String countryId, @Nullable String leagueId, @Nullable String matchId) {
-        return mCurrentEventsRepository.getCurrentEvent(from, to, countryId, leagueId, matchId);
+    public Observable<Response<List<Match>>> getEvents(String from, String to, @Nullable String countryId, @Nullable String leagueId, @Nullable String matchId) {
+        return mCurrentEventsRepository.getCurrentEvents(from, to, countryId, leagueId, matchId);
     }
 }
