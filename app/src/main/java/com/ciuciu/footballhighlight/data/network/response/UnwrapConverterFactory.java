@@ -1,5 +1,7 @@
 package com.ciuciu.footballhighlight.data.network.response;
 
+import com.google.gson.Gson;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -12,33 +14,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class UnwrapConverterFactory extends Converter.Factory {
 
     private GsonConverterFactory factory;
+    private Gson gson;
 
-    public UnwrapConverterFactory(GsonConverterFactory factory) {
+    public UnwrapConverterFactory(Gson gson, GsonConverterFactory factory) {
+        this.gson = gson;
         this.factory = factory;
     }
 
     @Override
-    public Converter<ResponseBody, ?> responseBodyConverter(final Type type,
-                                                            Annotation[] annotations, Retrofit retrofit) {
-        // e.g. WrappedResponse<Person>
-        Type wrappedType = new ParameterizedType() {
-            @Override
-            public Type[] getActualTypeArguments() {
-                // -> WrappedResponse<type>
-                return new Type[]{type};
-            }
+    public Converter<ResponseBody, ApiResponseBody> responseBodyConverter(final Type type, Annotation[] annotations, Retrofit retrofit) {
 
-            @Override
-            public Type getOwnerType() {
-                return null;
-            }
+        if (type instanceof ParameterizedType && ((ParameterizedType) type).getRawType().equals(ApiResponseBody.class)) {
+            Type[] typeArr = ((ParameterizedType) type).getActualTypeArguments();
 
-            @Override
-            public Type getRawType() {
-                return WrappedResponse.class;
+            if (typeArr.length > 0) {
+                return new WrappedResponseBodyConverter(gson, typeArr[0]);
             }
-        };
-        Converter<ResponseBody, ?> gsonConverter = factory.responseBodyConverter(wrappedType, annotations, retrofit);
-        return new WrappedResponseBodyConverter(gsonConverter);
+        }
+
+        return new WrappedResponseBodyConverter(gson, null);
     }
 }

@@ -2,6 +2,7 @@ package com.ciuciu.footballhighlight.di;
 
 import com.ciuciu.footballhighlight.BuildConfig;
 import com.ciuciu.footballhighlight.data.network.response.UnwrapConverterFactory;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 
@@ -59,9 +60,8 @@ public class NetworkModule {
 
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addConverterFactory(new UnwrapConverterFactory(GsonConverterFactory.create()))
-                //.addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
+                //.addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(new UnwrapConverterFactory(new Gson(), GsonConverterFactory.create()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
                 .build();

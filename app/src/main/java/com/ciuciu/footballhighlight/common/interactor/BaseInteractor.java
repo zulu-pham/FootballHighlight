@@ -12,7 +12,6 @@ public class BaseInteractor implements MvvmInteractor {
     private final DiskHelper mDiskHelper;
     private final LiveScoreApi mLiveScoreApi;
 
-
     @Inject
     public BaseInteractor(PreferencesHelper preferencesHelper,
                           DiskHelper diskHelper,

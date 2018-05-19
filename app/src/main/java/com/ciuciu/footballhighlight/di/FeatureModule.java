@@ -3,8 +3,8 @@ package com.ciuciu.footballhighlight.di;
 import android.arch.lifecycle.ViewModel;
 
 import com.ciuciu.footballhighlight.common.viewmodel.ViewModelKey;
-import com.ciuciu.footballhighlight.feature.events.current.CurrentEventsFragment;
-import com.ciuciu.footballhighlight.feature.events.current.viewmodel.CurrentEventsViewModel;
+import com.ciuciu.footballhighlight.feature.league.multi.MultiLeaguesFragment;
+import com.ciuciu.footballhighlight.feature.league.multi.MultiLeaguesViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -15,13 +15,14 @@ import dagger.multibindings.IntoMap;
 public abstract class FeatureModule {
 
     /**
-     * Events Current module
+     * Multi League module
      */
     @ContributesAndroidInjector
-    abstract CurrentEventsFragment currentEventsFragment();
+    abstract MultiLeaguesFragment multiLeaguesFragment();
 
     @Binds
     @IntoMap
-    @ViewModelKey(CurrentEventsViewModel.class)
-    abstract ViewModel bindCurrentEventsViewModel(CurrentEventsViewModel currentEventsViewModel);
+    @ViewModelKey(MultiLeaguesViewModel.class)
+    abstract ViewModel bindMultiLeaguesViewModel(MultiLeaguesViewModel multiLeaguesViewModel);
+
 }

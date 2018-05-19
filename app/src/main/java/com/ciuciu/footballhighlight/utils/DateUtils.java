@@ -16,4 +16,17 @@ public class DateUtils {
         calendar.add(Calendar.DATE, 1);
         return calendar.getTime();
     }
+
+    public static Date after(int numDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, numDate);
+        return calendar.getTime();
+    }
+
+    public static Date after(Date date, int numDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, numDate);
+        return calendar.getTime();
+    }
 }

@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 
 import com.ciuciu.footballhighlight.R;
 import com.ciuciu.footballhighlight.common.ui.BaseActivity;
-import com.ciuciu.footballhighlight.feature.events.current.CurrentEventsFragment;
+import com.ciuciu.footballhighlight.feature.league.multi.MultiLeaguesFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -24,7 +24,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initActivity() {
-        addFragment(R.id.rootLayout, CurrentEventsFragment.newInstance());
+        addFragment(R.id.rootLayout, MultiLeaguesFragment.newInstance());
     }
 
     private void addFragment(int viewId, Fragment fragment) {

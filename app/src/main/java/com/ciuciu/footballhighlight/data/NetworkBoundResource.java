@@ -2,9 +2,11 @@ package com.ciuciu.footballhighlight.data;
 
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.ciuciu.footballhighlight.data.network.response.ApiResponseBody;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -14,26 +16,21 @@ import io.reactivex.schedulers.Schedulers;
 
 public abstract class NetworkBoundResource<ResultType, RequestType> {
 
-    private Observable<Response<ResultType>> result;
+    private Observable<ApiResponseBody<ResultType>> result;
 
     @MainThread
     public NetworkBoundResource() {
         result = createCall()
                 .subscribeOn(Schedulers.io())
-                .flatMap(apiResponse -> Observable.just(Response.success(transformData(apiResponse))))
-                .doOnError(t -> {
+                .flatMap(apiResponse -> Observable.just(transformData(apiResponse)))
+                .onErrorResumeNext(throwable -> {
+                    Log.d("NetworkBoundResource", throwable.getMessage());
                     onFetchFailed();
-                })
-                .onErrorResumeNext(t -> {
-                    return Observable.just(Response.error(t, null));
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                //.startWith(Response.loading(null))
-        ;
-
+                    return Observable.just(ApiResponseBody.error());
+                });
     }
 
-    public Observable<Response<ResultType>> asObservable() {
+    public Observable<ApiResponseBody<ResultType>> asObservable() {
         return result;
     }
 
@@ -43,10 +40,9 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
 
     @NonNull
     @MainThread
-    protected abstract ResultType transformData(RequestType response);
+    protected abstract ApiResponseBody<ResultType> transformData(RequestType response);
 
     protected void onFetchFailed() {
 
     }
-
 }

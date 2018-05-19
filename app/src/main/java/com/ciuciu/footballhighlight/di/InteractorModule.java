@@ -1,7 +1,9 @@
 package com.ciuciu.footballhighlight.di;
 
-import com.ciuciu.footballhighlight.feature.events.current.interactor.CurrentEventsInteractor;
-import com.ciuciu.footballhighlight.feature.events.current.interactor.CurrentEventsInteractorImpl;
+import com.ciuciu.footballhighlight.feature.league.interactor.CurrentMatchInteractor;
+import com.ciuciu.footballhighlight.feature.league.interactor.CurrentMatchInteractorImpl;
+import com.ciuciu.footballhighlight.feature.league.interactor.PlayedMatchInteractor;
+import com.ciuciu.footballhighlight.feature.league.interactor.PlayedMatchInteractorImpl;
 
 import javax.inject.Singleton;
 
@@ -13,7 +15,14 @@ public class InteractorModule {
 
     @Provides
     @Singleton
-    CurrentEventsInteractor provideCurrentEventsInteractor(CurrentEventsInteractorImpl interactor) {
+    CurrentMatchInteractor provideCurrentMatchInteractor(CurrentMatchInteractorImpl interactor) {
         return interactor;
     }
+
+    @Provides
+    @Singleton
+    PlayedMatchInteractor providePlayedMatchInteractor(PlayedMatchInteractorImpl interactor) {
+        return interactor;
+    }
+
 }
